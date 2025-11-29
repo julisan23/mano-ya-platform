@@ -1,0 +1,8 @@
+{
+  "name": "MANO YA",
+  "description": "Plataforma de conexión rápida con profesionales del hogar verificados en Buenos Aires y AMBA.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
