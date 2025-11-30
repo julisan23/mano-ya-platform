@@ -13,7 +13,6 @@ dotenv.config();
 const API_KEY = process.env.API_KEY;
 const META_TOKEN = process.env.META_TOKEN; // Token real de Facebook Ads
 const MARKETING_BUDGET = parseFloat(process.env.MARKETING_BUDGET || '50'); // Presupuesto definido por vos
-const MARKETING_BUDGET = parseFloat(process.env.MARKETING_BUDGET || '50'); // Presupuesto definido por vos
 const PROMOTION_LINK = process.env.PROMOTION_LINK || "https://mano-ya.vercel.app"; // Link de tu web o app
 
 // En producción real, esto requiere una key válida de Gemini
