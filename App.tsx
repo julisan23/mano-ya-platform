@@ -115,192 +115,164 @@ function App() {
             {/* Search Results */}
             {hasSearched && (
               <div className="mt-8 text-left animate-fade-in">
-                <h3 className="text-brand-200 mb-4 font-medium flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  Resultados para "{searchQuery}": {searchResults.length} Capos encontrados
-                </h3>
-                <div className="grid gap-4">
-                  {searchResults.map((pro) => (
-                    <div key={pro.id} className="bg-white/5 border border-white/10 rounded-xl p-4 flex justify-between items-center hover:border-brand-500/50 transition-colors group">
-                      <div>
-                        <h4 className="font-bold text-lg text-white flex items-center gap-2 group-hover:text-brand-400 transition-colors">
-                          {pro.name}
-                          {pro.status === 'VERIFIED' && (
-                            <span title="Capo Verificado" className="bg-brand-500/20 p-1 rounded">
-                              <Shield className="w-4 h-4 text-brand-500" />
-                            </span>
-                          )}
-                        </h4>
-                        <div className="flex items-center gap-4 text-sm text-gray-400 mt-1">
-                          <span className="flex items-center gap-1"><HardHat className="w-3 h-3" /> {pro.service_type}</span>
-                          <span className="flex items-center gap-1 text-brand-400"><Star className="w-3 h-3 fill-brand-400" /> {pro.rating || 'N/A'}</span>
+                const [showDashboard, setShowDashboard] = useState(false);
+
+                return (
+                <div className="min-h-screen bg-brand-950 text-zinc-100 font-sans selection:bg-brand-500/30">
+                  {/* Subtle Grid Background */}
+                  <div className="fixed inset-0 z-0 pointer-events-none" style={{
+                    backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)',
+                    backgroundSize: '50px 50px'
+                  }}></div>
+
+                  {/* Navbar */}
+                  <nav className="fixed w-full z-50 bg-brand-950/80 backdrop-blur-xl border-b border-white/5">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                      <div className="flex items-center justify-between h-20">
+                        <div className="flex items-center gap-3">
+                          <div className="bg-white/5 p-2 rounded-lg border border-white/10">
+                            <HardHat className="w-5 h-5 text-brand-500" />
+                          </div>
+                          <span className="font-bold text-xl tracking-widest text-white">CAPOS</span>
+                        </div>
+                        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+                          <a href="#" className="hover:text-white transition-colors">Servicios</a>
+                          <a href="#" className="hover:text-white transition-colors">Garantía</a>
+                          <a href="#" className="hover:text-white transition-colors">Empresas</a>
+                          <button className="bg-white text-brand-950 px-5 py-2 rounded-full font-semibold hover:bg-zinc-200 transition-colors">
+                            Descargar App
+                          </button>
                         </div>
                       </div>
-                      <button className="bg-white/10 hover:bg-brand-500 hover:text-black text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all">
-                        <Phone className="w-4 h-4" />
-                        Contactar
-                      </button>
                     </div>
-                  ))}
-                  {searchResults.length === 0 && (
-                    <div className="text-center p-8 bg-white/5 rounded-xl border border-white/10 border-dashed text-gray-500">
-                      No encontramos Capos con ese término exacto. Probá con "Plomero" o "Gasista".
+                  </nav>
+
+                  {/* Hero Section */}
+                  <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-500 text-xs font-bold tracking-wider uppercase mb-8">
+                        <Star className="w-3 h-3 fill-brand-500" /> Solo el Top 5% de Profesionales
+                      </div>
+                      <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight mb-8 leading-tight">
+                        La élite de los <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-brand-600">servicios técnicos.</span>
+                      </h1>
+                      <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+                        No busques suerte. Contratá certeza. <br />
+                        Plomería, Gas y Electricidad con validación biométrica y garantía real.
+                      </p>
+
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button className="w-full sm:w-auto bg-brand-500 text-brand-950 px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] flex items-center justify-center gap-2">
+                          Solicitar un Capo <ArrowRight className="w-5 h-5" />
+                        </button>
+                        <button className="w-full sm:w-auto bg-white/5 text-white border border-white/10 px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/10 transition-all backdrop-blur-sm">
+                          Soy Profesional
+                        </button>
+                      </div>
+
+                      {/* Trust Indicators */}
+                      <div className="mt-16 pt-8 border-t border-white/5 flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                        {['Biometría Verificada', 'Seguro de Accidentes', 'Garantía de Satisfacción', 'Pagos Encriptados'].map((item, i) => (
+                          <div key={i} className="flex items-center gap-2 text-sm font-medium text-zinc-500">
+                            <CheckCircle2 className="w-4 h-4" /> {item}
+                          </div>
+                        ))}
+                      </div>
                     </div>
+                  </div>
+
+                  {/* Minimalist 'How it Works' */}
+                  <div className="py-32 bg-zinc-900/50 border-y border-white/5">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        {[
+                          { step: "01", title: "Solicitud Inteligente", desc: "Describí tu problema. Nuestra IA selecciona al especialista exacto para tu caso." },
+                          { step: "02", title: "Match Certificado", desc: "Recibí el perfil de un Capo verificado. Foto, matrícula y reputación validada." },
+                          { step: "03", title: "Garantía Total", desc: "El pago se libera solo cuando confirmás que el trabajo quedó perfecto." }
+                        ].map((item, i) => (
+                          <div key={i} className="relative group">
+                            <div className="text-6xl font-black text-white/5 group-hover:text-brand-500/10 transition-colors mb-4">{item.step}</div>
+                            <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                            <p className="text-zinc-400 leading-relaxed text-sm">{item.desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Premium Features */}
+                  <div className="py-32">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                        <div>
+                          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Estándar CAPOS.</h2>
+                          <p className="text-zinc-400 text-lg mb-8 leading-relaxed">
+                            Elevamos la vara. Lo que para otros es "premium", para nosotros es el piso.
+                            Rechazamos al 95% de los postulantes para que vos no tengas que filtrar a nadie.
+                          </p>
+                          <ul className="space-y-4">
+                            {[
+                              "Antecedentes penales verificados",
+                              "Validación de matrícula técnica",
+                              "Examen psicotécnico de ingreso",
+                              "Monitoreo de trabajos por IA"
+                            ].map((feat, i) => (
+                              <li key={i} className="flex items-center gap-3 text-zinc-300">
+                                <div className="w-1.5 h-1.5 rounded-full bg-brand-500"></div>
+                                {feat}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-brand-500/20 blur-3xl rounded-full opacity-20"></div>
+                          <div className="relative bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
+                            <div className="flex items-center gap-4 mb-6">
+                              <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center border border-white/10">
+                                <Shield className="w-6 h-6 text-brand-500" />
+                              </div>
+                              <div>
+                                <div className="text-white font-bold">Garantía de Satisfacción</div>
+                                <div className="text-zinc-500 text-sm">Cobertura total del servicio</div>
+                              </div>
+                            </div>
+                            <div className="space-y-3">
+                              <div className="h-2 bg-white/5 rounded-full w-full overflow-hidden">
+                                <div className="h-full bg-brand-500 w-3/4"></div>
+                              </div>
+                              <div className="flex justify-between text-xs text-zinc-500">
+                                <span>Nivel de Confianza</span>
+                                <span className="text-brand-500 font-bold">98.5%</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <footer className="py-12 border-t border-white/5 text-center">
+                    <div className="flex items-center justify-center gap-2 opacity-50 mb-4">
+                      <HardHat className="w-5 h-5 text-zinc-500" />
+                      <span className="font-bold text-zinc-500 tracking-widest">CAPOS</span>
+                    </div>
+                    <p className="text-zinc-600 text-sm">© 2025 CAPOS Argentina. Tecnología de confianza.</p>
+                    <button
+                      onClick={() => setShowDashboard(true)}
+                      className="mt-8 text-zinc-800 hover:text-zinc-600 transition-colors"
+                    >
+                      <Lock className="w-3 h-3" />
+                    </button>
+                  </footer>
+
+                  {/* President Dashboard Overlay */}
+                  {showDashboard && (
+                    <PresidentDashboard onClose={() => setShowDashboard(false)} />
                   )}
                 </div>
-              </div>
-            )}
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <a href="https://link.mercadopago.com.ar/manoya" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-brand-500 hover:bg-brand-400 text-black px-8 py-4 rounded-lg text-lg font-black uppercase tracking-wide transition-all transform hover:-translate-y-1 shadow-[0_10px_20px_-10px_rgba(245,158,11,0.4)]">
-              Reservar un Capo
-              <Shield className="w-5 h-5" />
-            </a>
-            <button className="flex items-center justify-center gap-3 bg-transparent hover:bg-white/5 text-white px-8 py-4 rounded-lg text-lg font-bold border-2 border-white/10 hover:border-white/30 transition-all uppercase tracking-wide">
-              Soy Profesional
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-24 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-12">
-            {[
-              { label: 'Usuarios Activos', value: '10k+' },
-              { label: 'Capos Verificados', value: '500+' },
-              { label: 'Calificación Media', value: '4.9/5' },
-              { label: 'Tiempo Respuesta', value: '< 15m' },
-            ].map((stat, index) => (
-              <div key={index} className="flex flex-col items-center group cursor-default">
-                <dt className="order-2 mt-2 text-sm font-bold text-gray-500 uppercase tracking-wider group-hover:text-brand-500 transition-colors">{stat.label}</dt>
-                <dd className="order-1 text-4xl font-black text-white">{stat.value}</dd>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* How it Works Section (New) */}
-      <div className="py-24 bg-brand-900/30 border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-black text-white mb-4 uppercase italic">¿Cómo funciona CAPOS?</h2>
-            <p className="text-gray-400">Simple. Seguro. Sin vueltas.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            {/* User Flow */}
-            <div>
-              <h3 className="text-xl font-bold text-brand-500 mb-8 flex items-center gap-2 uppercase">
-                <Search className="w-6 h-6" /> Para Clientes
-              </h3>
-              <div className="space-y-8 relative before:absolute before:left-4 before:top-2 before:h-full before:w-0.5 before:bg-white/10">
-                {[
-                  { title: "1. Buscá tu solución", desc: "Decinos qué necesitás. Plomería, Gas, Electricidad." },
-                  { title: "2. Elegí a un Capo", desc: "Verificá su reputación, precio y validación biométrica." },
-                  { title: "3. Reservá con Garantía", desc: "Tu pago se libera solo cuando el trabajo está terminado y aprobado." }
-                ].map((step, i) => (
-                  <div key={i} className="relative pl-12">
-                    <div className="absolute left-0 top-0 w-8 h-8 bg-brand-950 border-2 border-brand-500 rounded-full flex items-center justify-center font-bold text-brand-500 text-sm">
-                      {i + 1}
-                    </div>
-                    <h4 className="text-lg font-bold text-white">{step.title}</h4>
-                    <p className="text-gray-400 text-sm mt-1">{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Pro Flow */}
-            <div>
-              <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-2 uppercase">
-                <HardHat className="w-6 h-6" /> Para Profesionales
-              </h3>
-              <div className="space-y-8 relative before:absolute before:left-4 before:top-2 before:h-full before:w-0.5 before:bg-white/10">
-                {[
-                  { title: "1. Postulate", desc: "Completá tu perfil y pasá nuestro filtro de calidad." },
-                  { title: "2. Verificate", desc: "Validamos tu identidad y antecedentes para darte la insignia de Capo." },
-                  { title: "3. Trabajá seguro", desc: "Recibí pagos garantizados y construí tu reputación digital." }
-                ].map((step, i) => (
-                  <div key={i} className="relative pl-12">
-                    <div className="absolute left-0 top-0 w-8 h-8 bg-brand-950 border-2 border-white/20 rounded-full flex items-center justify-center font-bold text-gray-500 text-sm">
-                      {i + 1}
-                    </div>
-                    <h4 className="text-lg font-bold text-white">{step.title}</h4>
-                    <p className="text-gray-400 text-sm mt-1">{step.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Features Grid */}
-      <div className="py-24 bg-black/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-black text-white mb-4 uppercase italic">¿Por qué elegir un Capo?</h2>
-            <p className="text-gray-400 text-lg">No somos un directorio. Somos un filtro de calidad.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <Shield className="w-10 h-10 text-brand-500" />,
-                title: "Garantía de Trabajo",
-                desc: "Si el trabajo queda mal, CAPOS responde. Tu dinero está protegido hasta que des el OK."
-              },
-              {
-                icon: <Award className="w-10 h-10 text-brand-500" />,
-                title: "Solo el Top 5%",
-                desc: "Rechazamos al 95% de los postulantes. Solo entran los que tienen referencias reales y validación técnica."
-              },
-              {
-                icon: <Zap className="w-10 h-10 text-brand-500" />,
-                title: "Al Toque",
-                desc: "Sin vueltas. Cotización inmediata y disponibilidad en tiempo real. Valoramos tu tiempo."
-              }
-            ].map((feature, i) => (
-              <div key={i} className="p-8 rounded-xl bg-white/5 border border-white/10 hover:border-brand-500 transition-all hover:bg-white/[0.07] group hover:-translate-y-1">
-                <div className="mb-6 p-4 bg-brand-950 rounded-lg w-fit border border-white/10 group-hover:border-brand-500/50 transition-colors">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-black text-white mb-3 uppercase">{feature.title}</h3>
-                <p className="text-gray-400 leading-relaxed font-medium">
-                  {feature.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* Footer */}
-      <footer className="bg-brand-950 py-12 border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
-            <HardHat className="w-6 h-6 text-brand-500" />
-            <span className="font-black text-xl italic tracking-tighter">CAPOS</span>
-          </div>
-          <div className="text-gray-500 text-sm flex items-center gap-4 font-medium">
-            <span>© 2025 CAPOS Argentina. Todos los derechos reservados.</span>
-            <button
-              onClick={() => setShowDashboard(true)}
-              className="opacity-20 hover:opacity-100 transition-opacity cursor-pointer"
-              title="Acceso Presidente"
-            >
-              <Lock className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </footer>
-
-      {/* President Dashboard Overlay */}
-      {showDashboard && (
-        <PresidentDashboard onClose={() => setShowDashboard(false)} />
-      )}
-    </div>
-  );
+                );
 }
 
-export default App;
+                export default App;
