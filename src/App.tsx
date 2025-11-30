@@ -1,7 +1,9 @@
-import React from 'react';
-import { Hammer, Shield, Zap, Star, ArrowRight, CheckCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Hammer, Shield, Zap, Star, ArrowRight, CheckCircle, Lock } from 'lucide-react';
+import { PresidentDashboard } from './components/PresidentDashboard';
 
 function App() {
+    const [showDashboard, setShowDashboard] = useState(false);
     return (
         <div className="min-h-screen bg-brand-950 text-white font-sans selection:bg-action-500 selection:text-white">
             {/* Navbar */}
@@ -123,6 +125,30 @@ function App() {
                     </div>
                 </div>
             </div>
+            {/* Footer */}
+            <footer className="bg-brand-950 py-12 border-t border-white/10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="flex items-center gap-2 opacity-50">
+                        <Hammer className="w-5 h-5 text-white" />
+                        <span className="font-bold text-lg">MANO YA</span>
+                    </div>
+                    <div className="text-brand-400 text-sm flex items-center gap-4">
+                        <span>© 2025 Mano Ya Platform. Todos los derechos reservados.</span>
+                        <button
+                            onClick={() => setShowDashboard(true)}
+                            className="opacity-20 hover:opacity-100 transition-opacity cursor-pointer"
+                            title="Acceso Presidente"
+                        >
+                            <Lock className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            </footer>
+
+            {/* President Dashboard Overlay */}
+            {showDashboard && (
+                <PresidentDashboard onClose={() => setShowDashboard(false)} />
+            )}
         </div>
     );
 }
