@@ -7,10 +7,10 @@ export function PresidentDashboard({ onClose }: { onClose: () => void }) {
     ]);
     const [isRunning, setIsRunning] = useState(false);
     const [stats, setStats] = useState({
-        users: 1240,
-        pros: 85,
-        revenue: 4500,
-        sentiment: 85
+        users: 2, // Tú y yo (Real)
+        pros: 0,  // Aún no hay registrados
+        revenue: 0, // Aún no hay cobros
+        sentiment: 100 // Optimismo inicial
     });
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export function PresidentDashboard({ onClose }: { onClose: () => void }) {
         const interval = setInterval(() => {
             const newLog = generateLog();
             setLogs(prev => [...prev.slice(-5), newLog]); // Keep last 6 logs
-            
+
             // Simulate live stats updates
             setStats(prev => ({
                 users: prev.users + (Math.random() > 0.7 ? 1 : 0),
@@ -61,7 +61,7 @@ export function PresidentDashboard({ onClose }: { onClose: () => void }) {
                         <div className={`w-3 h-3 rounded-full ${isRunning ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></div>
                         <span className="text-xs font-bold tracking-wider">{isRunning ? 'AUTOPILOT: ACTIVE' : 'AUTOPILOT: PAUSED'}</span>
                     </div>
-                    <button 
+                    <button
                         onClick={() => setIsRunning(!isRunning)}
                         className={`px-6 py-2 rounded font-bold transition-all ${isRunning ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20' : 'bg-cyan-500 text-slate-950 hover:bg-cyan-400'}`}
                     >
