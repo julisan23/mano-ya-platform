@@ -180,6 +180,62 @@ function App() {
         </div>
       </div>
 
+      {/* How it Works Section (New) */}
+      <div className="py-24 bg-brand-900/30 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-black text-white mb-4 uppercase italic">¿Cómo funciona CAPOS?</h2>
+            <p className="text-gray-400">Simple. Seguro. Sin vueltas.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            {/* User Flow */}
+            <div>
+              <h3 className="text-xl font-bold text-brand-500 mb-8 flex items-center gap-2 uppercase">
+                <Search className="w-6 h-6" /> Para Clientes
+              </h3>
+              <div className="space-y-8 relative before:absolute before:left-4 before:top-2 before:h-full before:w-0.5 before:bg-white/10">
+                {[
+                  { title: "1. Buscá tu solución", desc: "Decinos qué necesitás. Plomería, Gas, Electricidad." },
+                  { title: "2. Elegí a un Capo", desc: "Verificá su reputación, precio y validación biométrica." },
+                  { title: "3. Reservá con Garantía", desc: "Tu pago se libera solo cuando el trabajo está terminado y aprobado." }
+                ].map((step, i) => (
+                  <div key={i} className="relative pl-12">
+                    <div className="absolute left-0 top-0 w-8 h-8 bg-brand-950 border-2 border-brand-500 rounded-full flex items-center justify-center font-bold text-brand-500 text-sm">
+                      {i + 1}
+                    </div>
+                    <h4 className="text-lg font-bold text-white">{step.title}</h4>
+                    <p className="text-gray-400 text-sm mt-1">{step.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Pro Flow */}
+            <div>
+              <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-2 uppercase">
+                <HardHat className="w-6 h-6" /> Para Profesionales
+              </h3>
+              <div className="space-y-8 relative before:absolute before:left-4 before:top-2 before:h-full before:w-0.5 before:bg-white/10">
+                {[
+                  { title: "1. Postulate", desc: "Completá tu perfil y pasá nuestro filtro de calidad." },
+                  { title: "2. Verificate", desc: "Validamos tu identidad y antecedentes para darte la insignia de Capo." },
+                  { title: "3. Trabajá seguro", desc: "Recibí pagos garantizados y construí tu reputación digital." }
+                ].map((step, i) => (
+                  <div key={i} className="relative pl-12">
+                    <div className="absolute left-0 top-0 w-8 h-8 bg-brand-950 border-2 border-white/20 rounded-full flex items-center justify-center font-bold text-gray-500 text-sm">
+                      {i + 1}
+                    </div>
+                    <h4 className="text-lg font-bold text-white">{step.title}</h4>
+                    <p className="text-gray-400 text-sm mt-1">{step.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Features Grid */}
       <div className="py-24 bg-black/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
