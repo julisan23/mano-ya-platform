@@ -82,12 +82,67 @@ async function runMarketingAgent() {
             console.log(">> Copy:", strategy.copy);
         }
 
+    }
     } catch (error) {
-        console.error("🔥 Error en el ciclo del agente:", error);
+    console.error("🔥 Error en el ciclo del agente de Marketing:", error);
+}
+}
+
+async function runRecruiterAgent() {
+    console.log("\n👷 AGENTE RECRUITER (RRHH) - Buscando Profesionales...");
+    if (!ai) return;
+
+    try {
+        const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const prompt = `
+            Eres el Recruiter Autónomo de "MANO YA".
+            Objetivo: Atraer nuevos profesionales (plomeros, electricistas, gasistas) para que se registren.
+            Link de registro: ${PROMOTION_LINK}/profesionales
+            
+            Redacta un post corto y atractivo para redes sociales (LinkedIn/Facebook) buscando talento.
+            Responde SOLO con el texto del post.
+        `;
+
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        console.log("📢 Post de Reclutamiento Generado:");
+        console.log(text);
+        // Aquí iría la lógica de publicación real en el futuro
+    } catch (error) {
+        console.error("⚠️ Error en Recruiter Agent:", error);
     }
 }
 
+async function runFinanceAgent() {
+    console.log("\n💰 AGENTE FINANCE (CFO) - Optimizando Presupuesto...");
+
+    // Simulación de análisis financiero
+    // En el futuro, esto leería de una base de datos real de ventas
+    const simulatedRevenue = Math.random() * 100; // Ingresos aleatorios entre 0 y 100
+
+    console.log(`📊 Ingresos del último ciclo: $${simulatedRevenue.toFixed(2)}`);
+
+    if (simulatedRevenue > 50) {
+        console.log("📈 Ingresos altos. Recomendación: AUMENTAR presupuesto de marketing.");
+        // Logic to update env var or DB would go here
+    } else {
+        console.log("📉 Ingresos bajos. Recomendación: MANTENER o REDUCIR gastos.");
+    }
+}
+
+async function runOrchestrator() {
+    console.log("\n==================================================");
+    console.log(`🚀 INICIANDO SISTEMA MULTI-AGENTE - ${new Date().toISOString()}`);
+    console.log("==================================================");
+
+    await runMarketingAgent();
+    await runRecruiterAgent();
+    await runFinanceAgent();
+
+    console.log("\n💤 Ciclo finalizado. Durmiendo 1 hora...");
+}
+
 // Bucle de Autogestión (Cada 1 hora)
-console.log("🟢 SISTEMA INICIADO. El agente correrá cada 1 hora indefinidamente.");
-runMarketingAgent(); // Ejecutar inmediatamente al inicio
-setInterval(runMarketingAgent, 1000 * 60 * 60); // 1 hora
+console.log("🟢 SISTEMA INICIADO. Los 3 agentes correrán cada 1 hora indefinidamente.");
+runOrchestrator(); // Ejecutar inmediatamente al inicio
+setInterval(runOrchestrator, 1000 * 60 * 60); // 1 hora
