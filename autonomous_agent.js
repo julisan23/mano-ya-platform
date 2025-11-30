@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
 
 // Cargar variables de entorno si existen (para API KEYS)
@@ -16,7 +16,7 @@ const MARKETING_BUDGET = parseFloat(process.env.MARKETING_BUDGET || '50'); // Pr
 const MERCADO_PAGO_LINK = process.env.MERCADO_PAGO_LINK || "https://link.mercadopago.com.ar/manoya";
 
 // En producción real, esto requiere una key válida de Gemini
-const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
+const ai = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
 
 // Estado persistente (en una DB real esto iría a SQL/Mongo)
 let currentStats = {
