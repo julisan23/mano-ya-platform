@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 dotenv.config();
 
 /**
- * AGENTE AUTÓNOMO MANO YA - BACKEND CORE
+ * AGENTE AUTÓNOMO CAPOS - BACKEND CORE
  * Este script está diseñado para ejecutarse en un servidor (Node.js) cron job.
  * No corre en el navegador del usuario. Es el "cerebro" oculto de la empresa.
  */
@@ -13,7 +13,7 @@ dotenv.config();
 const API_KEY = process.env.API_KEY;
 const META_TOKEN = process.env.META_TOKEN; // Token real de Facebook Ads
 const MARKETING_BUDGET = parseFloat(process.env.MARKETING_BUDGET || '50'); // Presupuesto definido por vos
-const PROMOTION_LINK = process.env.PROMOTION_LINK || "https://mano-ya.vercel.app"; // Link de tu web o app
+const PROMOTION_LINK = process.env.PROMOTION_LINK || "https://capos-app.vercel.app"; // Link de tu web o app
 
 // Configuración de Supabase
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -33,7 +33,7 @@ async function logSystem(agent, message) {
 
 async function runMarketingAgent() {
     console.log("------------------------------------------------");
-    console.log(`🤖 AGENTE MANO YA - CICLO DE EJECUCIÓN: ${new Date().toISOString()}`);
+    console.log(`🤖 AGENTE CAPOS - CICLO DE EJECUCIÓN: ${new Date().toISOString()}`);
     console.log(`💰 Presupuesto Asignado: $${MARKETING_BUDGET} USD`);
     console.log(`🔗 Link a Promocionar: ${PROMOTION_LINK}`);
     console.log("------------------------------------------------");
@@ -49,7 +49,8 @@ async function runMarketingAgent() {
         const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         const prompt = `
-      Eres el CEO Autónomo de "MANO YA".
+      Eres el CEO Autónomo de "CAPOS".
+      Somos una plataforma de servicios de élite (no un directorio común).
       Presupuesto actual: $${MARKETING_BUDGET}.
       Objetivo: Maximizar tráfico y descargas de la plataforma: ${PROMOTION_LINK}.
       NO compartas links de pago directo. Queremos usuarios en la app.
@@ -104,11 +105,12 @@ async function runRecruiterAgent() {
 
         const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
         const prompt = `
-            Eres el Recruiter Autónomo de "MANO YA".
-            Objetivo: Atraer nuevos profesionales. Ya tenemos ${count} registrados.
+            Eres el Recruiter Autónomo de "CAPOS".
+            Buscamos SOLO a los mejores (Top 5%). No queremos amateurs.
+            Objetivo: Atraer nuevos profesionales de élite. Ya tenemos ${count} registrados.
             Link de registro: ${PROMOTION_LINK}/profesionales
             
-            Redacta un post corto para LinkedIn.
+            Redacta un post corto para LinkedIn. Tono: Exclusivo, desafiante, profesional.
             Responde SOLO con el texto.
         `;
 
@@ -157,7 +159,7 @@ async function runQualityAgent() {
 
         for (const pro of newPros) {
             // Simular proceso de verificación (llamada/whatsapp)
-            await logSystem("QUALITY_QA", `📞 Contactando a ${pro.name} (${pro.service_type}) para validación...`);
+            await logSystem("QUALITY_QA", `📞 Contactando a ${pro.name} (${pro.service_type}) para validación biométrica...`);
 
             // Asignar rating inicial alto (4.5 - 5.0) ya que son "curados"
             const initialRating = (Math.random() * (5.0 - 4.5) + 4.5).toFixed(1);
@@ -173,7 +175,7 @@ async function runQualityAgent() {
                 .eq('id', pro.id);
 
             if (!error) {
-                await logSystem("QUALITY_QA", `✅ ${pro.name} VERIFICADO. Rating inicial: ${initialRating} ⭐`);
+                await logSystem("QUALITY_QA", `✅ ${pro.name} VERIFICADO como CAPO. Rating inicial: ${initialRating} ⭐`);
             }
         }
 
@@ -200,6 +202,6 @@ async function runOrchestrator() {
 }
 
 // Bucle de Autogestión (Cada 1 hora)
-console.log("🟢 SISTEMA INICIADO. Los 3 agentes correrán cada 1 hora indefinidamente.");
+console.log("🟢 SISTEMA CAPOS INICIADO. Los 3 agentes correrán cada 1 hora indefinidamente.");
 runOrchestrator(); // Ejecutar inmediatamente al inicio
 setInterval(runOrchestrator, 1000 * 60 * 60); // 1 hora

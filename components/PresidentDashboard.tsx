@@ -61,7 +61,7 @@ export function PresidentDashboard({ onClose }: any) {
                 <div>
                     <h1 className="text-3xl font-bold flex items-center gap-3 text-white">
                         <Terminal className="w-8 h-8 text-cyan-400" />
-                        _ CENTRO DE COMANDO <span className="text-cyan-400">MANO YA</span>
+                        _ CENTRO DE COMANDO <span className="text-cyan-400">CAPOS</span>
                     </h1>
                     <p className="text-cyan-700 text-sm mt-1">Hola, Presidente. Sistema Operativo Autónomo V3.0.</p>
                 </div>
@@ -85,7 +85,7 @@ export function PresidentDashboard({ onClose }: any) {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <StatCard icon={<Users />} label="USUARIOS ACTIVOS" value={stats.users} sub="↗ Creciendo automático" color="text-white" />
-                <StatCard icon={<Briefcase />} label="PROFESIONALES" value={stats.pros} sub="Ratio: 0.07" color="text-white" />
+                <StatCard icon={<Briefcase />} label="CAPOS VERIFICADOS" value={stats.pros} sub="Ratio: 0.07" color="text-white" />
                 <StatCard icon={<DollarSign />} label="REVENUE (USD)" value={`$${stats.revenue.toFixed(0)}`} sub="Balance PayPal/MP" color="text-green-400" />
                 <div className="bg-slate-900/50 border border-cyan-900/30 p-6 rounded-xl">
                     <div className="flex items-center gap-2 mb-2 text-cyan-600 text-xs font-bold tracking-wider uppercase">
@@ -116,7 +116,7 @@ export function PresidentDashboard({ onClose }: any) {
                         <div className="w-3 h-3 rounded-full bg-red-500"></div>
                         <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                         <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span className="ml-2 text-slate-500 text-xs">/var/log/mano_ya_autonomous_core</span>
+                        <span className="ml-2 text-slate-500 text-xs">/var/log/capos_autonomous_core</span>
                     </div>
                     <div className="mt-8 space-y-2 h-full overflow-y-auto pb-4">
                         {logs.map((log, i) => (
