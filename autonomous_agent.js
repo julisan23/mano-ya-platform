@@ -13,7 +13,8 @@ dotenv.config();
 const API_KEY = process.env.API_KEY;
 const META_TOKEN = process.env.META_TOKEN; // Token real de Facebook Ads
 const MARKETING_BUDGET = parseFloat(process.env.MARKETING_BUDGET || '50'); // Presupuesto definido por vos
-const MERCADO_PAGO_LINK = process.env.MERCADO_PAGO_LINK || "https://link.mercadopago.com.ar/manoya";
+const MARKETING_BUDGET = parseFloat(process.env.MARKETING_BUDGET || '50'); // Presupuesto definido por vos
+const PROMOTION_LINK = process.env.PROMOTION_LINK || "https://mano-ya.vercel.app"; // Link de tu web o app
 
 // En producción real, esto requiere una key válida de Gemini
 const ai = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
@@ -29,7 +30,7 @@ async function runMarketingAgent() {
     console.log("------------------------------------------------");
     console.log(`🤖 AGENTE MANO YA - CICLO DE EJECUCIÓN: ${new Date().toISOString()}`);
     console.log(`💰 Presupuesto Asignado: $${MARKETING_BUDGET} USD`);
-    console.log(`🔗 Link de Cobro: ${MERCADO_PAGO_LINK}`);
+    console.log(`🔗 Link a Promocionar: ${PROMOTION_LINK}`);
     console.log("------------------------------------------------");
 
     if (!ai) {
@@ -45,7 +46,8 @@ async function runMarketingAgent() {
         const prompt = `
       Eres el CEO Autónomo de "MANO YA".
       Presupuesto actual: $${MARKETING_BUDGET}.
-      Objetivo: Maximizar clics al link de pago: ${MERCADO_PAGO_LINK}.
+      Objetivo: Maximizar tráfico y descargas de la plataforma: ${PROMOTION_LINK}.
+      NO compartas links de pago directo. Queremos usuarios en la app.
       
       Decide la acción de marketing de hoy.
       Si el presupuesto es bajo (<10), sugiere acciones orgánicas.
