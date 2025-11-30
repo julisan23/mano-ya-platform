@@ -166,128 +166,168 @@ function App() {
                         SQUAD.
                       </h1>
                       <p className="text-xl md:text-2xl text-zinc-300 max-w-3xl mx-auto mb-12 font-light leading-relaxed tracking-wide">
-                        La plataforma definitiva para servicios de alta gama. <br />
-                        <span className="text-white font-medium">Biometría. Garantía Real. Sin Amateurs.</span>
-                      </p>
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                          <button className="group relative px-8 py-4 bg-brand-500 text-brand-950 rounded-full font-black text-lg tracking-wider overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.5)]">
+                            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                            <span className="relative flex items-center gap-2">
+                              SOLICITAR CAPO <ArrowRight className="w-5 h-5" />
+                            </span>
+                          </button>
+                          <button className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-bold text-lg tracking-wider hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-md">
+                            ACCESO PROFESIONAL
+                          </button>
+                        </div>
 
-                      <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                        <button className="group relative px-8 py-4 bg-brand-500 text-brand-950 rounded-full font-black text-lg tracking-wider overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.5)]">
-                          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                          <span className="relative flex items-center gap-2">
-                            SOLICITAR CAPO <ArrowRight className="w-5 h-5" />
-                          </span>
-                        </button>
-                        <button className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-bold text-lg tracking-wider hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-md">
-                          ACCESO PROFESIONAL
-                        </button>
+                        {/* Premium Trust Indicators */}
+                        <div className="mt-20 pt-10 border-t border-white/5 flex flex-wrap justify-center gap-12 opacity-80">
+                          {[
+                            { icon: Lock, text: 'AES-256 Encrypted' },
+                            { icon: Shield, text: 'Biometric Verified' },
+                            { icon: Award, text: 'Top 1% Talent' }
+                          ].map((item, i) => (
+                            <div key={i} className="flex items-center gap-3 text-xs font-bold text-zinc-500 uppercase tracking-widest">
+                              <item.icon className="w-4 h-4 text-brand-500" /> {item.text}
+                            </div>
+                          ))}
+                        </div>
+                    </div>
+                  </div>
+
+                  {/* Search Bar (original position, but now with the correct content) */}
+                  <div className="max-w-2xl mx-auto mb-16 relative z-20">
+                    <form onSubmit={handleSearch} className="relative flex items-center group">
+                      <Search className="absolute left-5 w-6 h-6 text-gray-500 group-focus-within:text-brand-500 transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="¿Qué necesitás arreglar? (ej: Plomero, Gasista)"
+                        className="w-full bg-white/5 backdrop-blur-md border-2 border-white/10 rounded-xl py-5 pl-16 pr-36 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-all text-lg font-medium"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <button
+                        type="submit"
+                        className="absolute right-2 bg-brand-500 hover:bg-brand-400 text-black px-8 py-3 rounded-lg font-black uppercase tracking-wide transition-all"
+                        disabled={isSearching}
+                      >
+                        {isSearching ? '...' : 'Buscar'}
+                      </button>
+                    </form>
+
+                    {/* Search Results */}
+                    {hasSearched && (
+                      <div className="mt-8 text-left animate-fade-in">
+                        {searchResults.length > 0 ? (
+                          <ul className="space-y-4">
+                            {searchResults.map((professional) => (
+                              <li key={professional.id} className="bg-white/5 border border-white/10 p-4 rounded-lg flex items-center gap-4">
+                                <div className="w-12 h-12 bg-brand-500 rounded-full flex items-center justify-center text-black font-bold text-xl">
+                                  {professional.name.charAt(0)}
+                                </div>
+                                <div>
+                                  <h3 className="text-lg font-bold text-white">{professional.name}</h3>
+                                  <p className="text-gray-400 text-sm">{professional.service_type}</p>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-gray-400 text-center">No se encontraron resultados para "{searchQuery}".</p>
+                        )}
                       </div>
+                    )}
+                  </div>
 
-                      {/* Premium Trust Indicators */}
-                      <div className="mt-20 pt-10 border-t border-white/5 flex flex-wrap justify-center gap-12 opacity-80">
+                  {/* Minimalist 'How it Works' */}
+                  <div className="py-32 bg-zinc-900/50 border-y border-white/5">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                         {[
-                          { icon: Lock, text: 'AES-256 Encrypted' },
-                          { icon: Shield, text: 'Biometric Verified' },
-                          { icon: Award, text: 'Top 1% Talent' }
+                          { step: "01", title: "Solicitud Inteligente", desc: "Describí tu problema. Nuestra IA selecciona al especialista exacto para tu caso." },
+                          { step: "02", title: "Match Certificado", desc: "Recibí el perfil de un Capo verificado. Foto, matrícula y reputación validada." },
+                          { step: "03", title: "Garantía Total", desc: "El pago se libera solo cuando confirmás que el trabajo quedó perfecto." }
                         ].map((item, i) => (
-                          <div key={i} className="flex items-center gap-3 text-xs font-bold text-zinc-500 uppercase tracking-widest">
-                            <item.icon className="w-4 h-4 text-brand-500" /> {item.text}
+                          <div key={i} className="relative group">
+                            <div className="text-6xl font-black text-white/5 group-hover:text-brand-500/10 transition-colors mb-4">{item.step}</div>
+                            <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+                            <p className="text-zinc-400 leading-relaxed text-sm">{item.desc}</p>
                           </div>
                         ))}
                       </div>
                     </div>
-                  </div>      </div>
-
-                {/* Minimalist 'How it Works' */}
-                <div className="py-32 bg-zinc-900/50 border-y border-white/5">
-                  <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                      {[
-                        { step: "01", title: "Solicitud Inteligente", desc: "Describí tu problema. Nuestra IA selecciona al especialista exacto para tu caso." },
-                        { step: "02", title: "Match Certificado", desc: "Recibí el perfil de un Capo verificado. Foto, matrícula y reputación validada." },
-                        { step: "03", title: "Garantía Total", desc: "El pago se libera solo cuando confirmás que el trabajo quedó perfecto." }
-                      ].map((item, i) => (
-                        <div key={i} className="relative group">
-                          <div className="text-6xl font-black text-white/5 group-hover:text-brand-500/10 transition-colors mb-4">{item.step}</div>
-                          <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                          <p className="text-zinc-400 leading-relaxed text-sm">{item.desc}</p>
-                        </div>
-                      ))}
-                    </div>
                   </div>
-                </div>
 
-                {/* Premium Features */}
-                <div className="py-32">
-                  <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                      <div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Estándar CAPOS.</h2>
-                        <p className="text-zinc-400 text-lg mb-8 leading-relaxed">
-                          Elevamos la vara. Lo que para otros es "premium", para nosotros es el piso.
-                          Rechazamos al 95% de los postulantes para que vos no tengas que filtrar a nadie.
-                        </p>
-                        <ul className="space-y-4">
-                          {[
-                            "Antecedentes penales verificados",
-                            "Validación de matrícula técnica",
-                            "Examen psicotécnico de ingreso",
-                            "Monitoreo de trabajos por IA"
-                          ].map((feat, i) => (
-                            <li key={i} className="flex items-center gap-3 text-zinc-300">
-                              <div className="w-1.5 h-1.5 rounded-full bg-brand-500"></div>
-                              {feat}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-brand-500/20 blur-3xl rounded-full opacity-20"></div>
-                        <div className="relative bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
-                          <div className="flex items-center gap-4 mb-6">
-                            <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center border border-white/10">
-                              <Shield className="w-6 h-6 text-brand-500" />
+                  {/* Premium Features */}
+                  <div className="py-32">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                        <div>
+                          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Estándar CAPOS.</h2>
+                          <p className="text-zinc-400 text-lg mb-8 leading-relaxed">
+                            Elevamos la vara. Lo que para otros es "premium", para nosotros es el piso.
+                            Rechazamos al 95% de los postulantes para que vos no tengas que filtrar a nadie.
+                          </p>
+                          <ul className="space-y-4">
+                            {[
+                              "Antecedentes penales verificados",
+                              "Validación de matrícula técnica",
+                              "Examen psicotécnico de ingreso",
+                              "Monitoreo de trabajos por IA"
+                            ].map((feat, i) => (
+                              <li key={i} className="flex items-center gap-3 text-zinc-300">
+                                <div className="w-1.5 h-1.5 rounded-full bg-brand-500"></div>
+                                {feat}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-brand-500/20 blur-3xl rounded-full opacity-20"></div>
+                          <div className="relative bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-xl">
+                            <div className="flex items-center gap-4 mb-6">
+                              <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center border border-white/10">
+                                <Shield className="w-6 h-6 text-brand-500" />
+                              </div>
+                              <div>
+                                <div className="text-white font-bold">Garantía de Satisfacción</div>
+                                <div className="text-zinc-500 text-sm">Cobertura total del servicio</div>
+                              </div>
                             </div>
-                            <div>
-                              <div className="text-white font-bold">Garantía de Satisfacción</div>
-                              <div className="text-zinc-500 text-sm">Cobertura total del servicio</div>
-                            </div>
-                          </div>
-                          <div className="space-y-3">
-                            <div className="h-2 bg-white/5 rounded-full w-full overflow-hidden">
-                              <div className="h-full bg-brand-500 w-3/4"></div>
-                            </div>
-                            <div className="flex justify-between text-xs text-zinc-500">
-                              <span>Nivel de Confianza</span>
-                              <span className="text-brand-500 font-bold">98.5%</span>
+                            <div className="space-y-3">
+                              <div className="h-2 bg-white/5 rounded-full w-full overflow-hidden">
+                                <div className="h-full bg-brand-500 w-3/4"></div>
+                              </div>
+                              <div className="flex justify-between text-xs text-zinc-500">
+                                <span>Nivel de Confianza</span>
+                                <span className="text-brand-500 font-bold">98.5%</span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* Footer */}
+                  <footer className="py-12 border-t border-white/5 text-center">
+                    <div className="flex items-center justify-center gap-2 opacity-50 mb-4">
+                      <HardHat className="w-5 h-5 text-zinc-500" />
+                      <span className="font-bold text-zinc-500 tracking-widest">CAPOS</span>
+                    </div>
+                    <p className="text-zinc-600 text-sm">© 2025 CAPOS Argentina. Tecnología de confianza.</p>
+                    <button
+                      onClick={() => setShowDashboard(true)}
+                      className="mt-8 text-zinc-800 hover:text-zinc-600 transition-colors"
+                    >
+                      <Lock className="w-3 h-3" />
+                    </button>
+                  </footer>
+
+                  {/* President Dashboard Overlay */}
+                  {showDashboard && (
+                    <PresidentDashboard onClose={() => setShowDashboard(false)} />
+                  )}
                 </div>
-
-                {/* Footer */}
-                <footer className="py-12 border-t border-white/5 text-center">
-                  <div className="flex items-center justify-center gap-2 opacity-50 mb-4">
-                    <HardHat className="w-5 h-5 text-zinc-500" />
-                    <span className="font-bold text-zinc-500 tracking-widest">CAPOS</span>
-                  </div>
-                  <p className="text-zinc-600 text-sm">© 2025 CAPOS Argentina. Tecnología de confianza.</p>
-                  <button
-                    onClick={() => setShowDashboard(true)}
-                    className="mt-8 text-zinc-800 hover:text-zinc-600 transition-colors"
-                  >
-                    <Lock className="w-3 h-3" />
-                  </button>
-                </footer>
-
-                {/* President Dashboard Overlay */}
-                {showDashboard && (
-                  <PresidentDashboard onClose={() => setShowDashboard(false)} />
-                )}
-              </div>
-            );
+                );
 }
 
-            export default App;
+                export default App;
