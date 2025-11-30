@@ -25,23 +25,7 @@ let currentStats = {
     adsRunning: 0
 };
 
-async function debugModels() {
-    try {
-        console.log("🔍 DEBUG: Listando modelos disponibles para esta API KEY...");
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${API_KEY}`);
-        const data = await response.json();
-        if (data.error) {
-            console.error("❌ Error API Google:", data.error);
-        } else {
-            console.log("📋 Modelos encontrados:", data.models?.map(m => m.name) || data);
-        }
-    } catch (e) {
-        console.error("❌ Error listando modelos:", e);
-    }
-}
-
 async function runMarketingAgent() {
-    await debugModels(); // Ejecutar debug antes del ciclo
     console.log("------------------------------------------------");
     console.log(`🤖 AGENTE MANO YA - CICLO DE EJECUCIÓN: ${new Date().toISOString()}`);
     console.log(`💰 Presupuesto Asignado: $${MARKETING_BUDGET} USD`);
@@ -56,7 +40,7 @@ async function runMarketingAgent() {
     try {
         // 1. Decisión Estratégica (Real)
         console.log("🧠 Consultando a Gemini para estrategia en tiempo real...");
-        const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         const prompt = `
       Eres el CEO Autónomo de "MANO YA".
