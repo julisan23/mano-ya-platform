@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
 
 // Cargar variables de entorno si existen (para API KEYS)
 dotenv.config();
@@ -15,15 +15,21 @@ const META_TOKEN = process.env.META_TOKEN; // Token real de Facebook Ads
 const MARKETING_BUDGET = parseFloat(process.env.MARKETING_BUDGET || '50'); // Presupuesto definido por vos
 const PROMOTION_LINK = process.env.PROMOTION_LINK || "https://mano-ya.vercel.app"; // Link de tu web o app
 
+// Configuración de Supabase
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
+
 // En producción real, esto requiere una key válida de Gemini
 const ai = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
 
-// Estado persistente (en una DB real esto iría a SQL/Mongo)
-let currentStats = {
-    revenue: 4500,
-    users: 1240,
-    adsRunning: 0
-};
+// Helper para loguear en Supabase
+async function logSystem(agent, message) {
+    console.log(`[${agent}] ${message}`);
+    if (supabase) {
+        await supabase.from('system_logs').insert({ agent_name: agent, message: message });
+    }
+}
 
 async function runMarketingAgent() {
     console.log("------------------------------------------------");
@@ -68,64 +74,67 @@ async function runMarketingAgent() {
         // 2. Ejecución Real
         if (strategy.action === "ADS") {
             if (!META_TOKEN) {
-                console.warn("⚠️ FALTA META_TOKEN: No se puede publicar el anuncio automáticamente en Facebook.");
-                console.log(">> ACCIÓN REQUERIDA: Publicar manualmente este copy:", strategy.copy);
+                await logSystem("MARKETING", `⚠️ FALTA META_TOKEN. Acción requerida: Publicar manualmente: "${strategy.copy}"`);
             } else {
-                console.log("🚀 Conectando con Meta Graph API para publicar anuncio...");
-                // Aquí iría la llamada real a fetch('https://graph.facebook.com/v18.0/act_.../campaigns', ...)
+                await logSystem("MARKETING", "🚀 Publicando anuncio en Facebook Ads...");
                 // await postToFacebook(strategy.copy, strategy.bid);
-                console.log("✅ Anuncio enviado a revisión en Facebook Ads.");
-                currentStats.adsRunning++;
+                await logSystem("MARKETING", "✅ Anuncio enviado a revisión.");
             }
         } else {
-            console.log("📢 Ejecutando acción orgánica (Twitter/Instagram)...");
-            console.log(">> Copy:", strategy.copy);
+            await logSystem("MARKETING", `📢 Ejecutando acción orgánica: "${strategy.copy}"`);
         }
 
     } catch (error) {
-        console.error("🔥 Error en el ciclo del agente de Marketing:", error);
+        await logSystem("MARKETING", `🔥 Error: ${error.message}`);
     }
 }
 
 async function runRecruiterAgent() {
-    console.log("\n👷 AGENTE RECRUITER (RRHH) - Buscando Profesionales...");
+    await logSystem("RECRUITER", "Buscando nuevos profesionales...");
     if (!ai) return;
 
     try {
+        // Contar profesionales actuales
+        let count = 0;
+        if (supabase) {
+            const { count: dbCount } = await supabase.from('professionals').select('*', { count: 'exact', head: true });
+            count = dbCount || 0;
+        }
+        await logSystem("RECRUITER", `Profesionales actuales en base de datos: ${count}`);
+
         const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
         const prompt = `
             Eres el Recruiter Autónomo de "MANO YA".
-            Objetivo: Atraer nuevos profesionales (plomeros, electricistas, gasistas) para que se registren.
+            Objetivo: Atraer nuevos profesionales. Ya tenemos ${count} registrados.
             Link de registro: ${PROMOTION_LINK}/profesionales
             
-            Redacta un post corto y atractivo para redes sociales (LinkedIn/Facebook) buscando talento.
-            Responde SOLO con el texto del post.
+            Redacta un post corto para LinkedIn.
+            Responde SOLO con el texto.
         `;
 
         const result = await model.generateContent(prompt);
         const text = result.response.text();
-        console.log("📢 Post de Reclutamiento Generado:");
-        console.log(text);
-        // Aquí iría la lógica de publicación real en el futuro
+        await logSystem("RECRUITER", `Post generado: "${text.substring(0, 50)}..."`);
     } catch (error) {
-        console.error("⚠️ Error en Recruiter Agent:", error);
+        await logSystem("RECRUITER", `⚠️ Error: ${error.message}`);
     }
 }
 
 async function runFinanceAgent() {
-    console.log("\n💰 AGENTE FINANCE (CFO) - Optimizando Presupuesto...");
+    await logSystem("FINANCE", "Analizando flujo de caja...");
 
-    // Simulación de análisis financiero
-    // En el futuro, esto leería de una base de datos real de ventas
-    const simulatedRevenue = Math.random() * 100; // Ingresos aleatorios entre 0 y 100
+    let realRevenue = 0;
+    if (supabase) {
+        const { data } = await supabase.from('financial_logs').select('amount').eq('type', 'INCOME');
+        realRevenue = data?.reduce((sum, item) => sum + item.amount, 0) || 0;
+    }
 
-    console.log(`📊 Ingresos del último ciclo: $${simulatedRevenue.toFixed(2)}`);
+    await logSystem("FINANCE", `Ingresos Totales Reales: $${realRevenue.toFixed(2)} USD`);
 
-    if (simulatedRevenue > 50) {
-        console.log("📈 Ingresos altos. Recomendación: AUMENTAR presupuesto de marketing.");
-        // Logic to update env var or DB would go here
+    if (realRevenue > 100) {
+        await logSystem("FINANCE", "📈 Ingresos superan objetivo. AUMENTAR presupuesto de marketing.");
     } else {
-        console.log("📉 Ingresos bajos. Recomendación: MANTENER o REDUCIR gastos.");
+        await logSystem("FINANCE", "📉 Ingresos bajos. MANTENER austeridad.");
     }
 }
 
