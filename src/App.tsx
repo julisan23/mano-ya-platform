@@ -95,127 +95,110 @@ return (
                     {hasSearched && (
                         <div className="mt-8 text-left animate-fade-in">
                             <h3 className="text-brand-200 mb-4 font-medium flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4" />
-                                Resultados para "{searchQuery}": {searchResults.length} profesionales encontrados
-                            </h3>
-                            <div className="grid gap-4">
-                                {searchResults.map((pro) => (
-                                    <div key={pro.id} className="bg-white/5 border border-white/10 rounded-xl p-4 flex justify-between items-center hover:bg-white/10 transition-colors">
-                                        <div>
-                                            <h4 className="font-bold text-lg text-white">{pro.name}</h4>
-                                            <div className="flex items-center gap-4 text-sm text-brand-300 mt-1">
-                                                <span className="flex items-center gap-1"><Hammer className="w-3 h-3" /> {pro.service_type}</span>
-                                                <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> Buenos Aires</span>
-                                            </div>
-                                        </div>
-                                        <button className="bg-brand-700 hover:bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors">
-                                            <Phone className="w-4 h-4" />
-                                            Contactar
-                                        </button>
-                                    </div>
-                                ))}
                                 {searchResults.length === 0 && (
                                     <div className="text-center p-8 bg-white/5 rounded-xl border border-white/10 border-dashed text-brand-300">
                                         No encontramos profesionales con ese término exacto. Intenta con "Plomero", "Electricista" o "Gasista".
                                     </div>
                                 )}
-                            </div>
+                        </div>
                         </div>
                     )}
-                </div>
+            </div>
 
-                <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="https://link.mercadopago.com.ar/manoya" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-action-600 hover:bg-action-500 text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all transform hover:scale-105 shadow-lg shadow-action-600/25">
-                        Solicitar Servicio YA
-                        <Zap className="w-5 h-5" />
-                    </a>
-                    <button className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all border border-white/10 backdrop-blur-sm">
-                        Soy Profesional
-                        <ArrowRight className="w-5 h-5" />
-                    </button>
-                </div>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://link.mercadopago.com.ar/manoya" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-action-600 hover:bg-action-500 text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all transform hover:scale-105 shadow-lg shadow-action-600/25">
+                    Solicitar Servicio YA
+                    <Zap className="w-5 h-5" />
+                </a>
+                <button className="flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all border border-white/10 backdrop-blur-sm">
+                    Soy Profesional
+                    <ArrowRight className="w-5 h-5" />
+                </button>
+            </div>
 
-                {/* Stats */}
-                <div className="mt-20 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-10">
-                    {[
-                        { label: 'Usuarios Activos', value: '10k+' },
-                        { label: 'Profesionales', value: '500+' },
-                        { label: 'Calificación', value: '4.9/5' },
-                        { label: 'Tiempo Promedio', value: '30min' },
-                    ].map((stat, index) => (
-                        <div key={index} className="flex flex-col items-center">
-                            <dt className="order-2 mt-2 text-sm font-medium text-brand-200">{stat.label}</dt>
-                            <dd className="order-1 text-3xl font-bold text-white">{stat.value}</dd>
-                        </div>
-                    ))}
-                </div>
+            {/* Stats */}
+            <div className="mt-20 grid grid-cols-2 gap-8 md:grid-cols-4 border-t border-white/10 pt-10">
+                {[
+                    { label: 'Usuarios Activos', value: '10k+' },
+                    { label: 'Profesionales', value: '500+' },
+                    { label: 'Calificación', value: '4.9/5' },
+                    { label: 'Tiempo Promedio', value: '30min' },
+                ].map((stat, index) => (
+                    <div key={index} className="flex flex-col items-center">
+                        <dt className="order-2 mt-2 text-sm font-medium text-brand-200">{stat.label}</dt>
+                        <dd className="order-1 text-3xl font-bold text-white">{stat.value}</dd>
+                    </div>
+                ))}
             </div>
         </div>
-
-        {/* Features Grid */}
-        <div className="py-24 bg-brand-900/50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl font-bold text-white mb-4">¿Por qué MANO YA?</h2>
-                    <p className="text-brand-200">La plataforma estándar para servicios del hogar.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {[
-                        {
-                            icon: <Shield className="w-8 h-8 text-brand-500" />,
-                            title: "Garantía Total",
-                            desc: "Cada trabajo está asegurado. Si no queda bien, lo arreglamos gratis."
-                        },
-                        {
-                            icon: <CheckCircle className="w-8 h-8 text-green-500" />,
-                            title: "Pros Verificados",
-                            desc: "Solo aceptamos al top 5% de los profesionales. Antecedentes chequeados."
-                        },
-                        {
-                            icon: <Star className="w-8 h-8 text-yellow-500" />,
-                            title: "Precios Claros",
-                            desc: "Cotización inmediata antes de contratar. Sin sorpresas ni recargos."
-                        }
-                    ].map((feature, i) => (
-                        <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-brand-500/50 transition-all hover:bg-white/[0.07] group">
-                            <div className="mb-6 p-4 bg-brand-950 rounded-2xl w-fit group-hover:scale-110 transition-transform">
-                                {feature.icon}
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-                            <p className="text-brand-200 leading-relaxed">
-                                {feature.desc}
-                            </p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </div>
-        {/* Footer */}
-        <footer className="bg-brand-950 py-12 border-t border-white/10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div className="flex items-center gap-2 opacity-50">
-                    <Hammer className="w-5 h-5 text-white" />
-                    <span className="font-bold text-lg">MANO YA</span>
-                </div>
-                <div className="text-brand-400 text-sm flex items-center gap-4">
-                    <span>© 2025 Mano Ya Platform. Todos los derechos reservados.</span>
-                    <button
-                        onClick={() => setShowDashboard(true)}
-                        className="opacity-20 hover:opacity-100 transition-opacity cursor-pointer"
-                        title="Acceso Presidente"
-                    >
-                        <Lock className="w-4 h-4" />
-                    </button>
-                </div>
-            </div>
-        </footer>
-
-        {/* President Dashboard Overlay */}
-        {showDashboard && (
-            <PresidentDashboard onClose={() => setShowDashboard(false)} />
-        )}
     </div>
+
+        {/* Features Grid */ }
+<div className="py-24 bg-brand-900/50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-white mb-4">¿Por qué MANO YA?</h2>
+            <p className="text-brand-200">La plataforma estándar para servicios del hogar.</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+                {
+                    icon: <Shield className="w-8 h-8 text-brand-500" />,
+                    title: "Garantía Total",
+                    desc: "Cada trabajo está asegurado. Si no queda bien, lo arreglamos gratis."
+                },
+                {
+                    icon: <CheckCircle className="w-8 h-8 text-green-500" />,
+                    title: "Pros Verificados",
+                    desc: "Solo aceptamos al top 5% de los profesionales. Antecedentes chequeados."
+                },
+                {
+                    icon: <Star className="w-8 h-8 text-yellow-500" />,
+                    title: "Precios Claros",
+                    desc: "Cotización inmediata antes de contratar. Sin sorpresas ni recargos."
+                }
+            ].map((feature, i) => (
+                <div key={i} className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-brand-500/50 transition-all hover:bg-white/[0.07] group">
+                    <div className="mb-6 p-4 bg-brand-950 rounded-2xl w-fit group-hover:scale-110 transition-transform">
+                        {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
+                    <p className="text-brand-200 leading-relaxed">
+                        {feature.desc}
+                    </p>
+                </div>
+            ))}
+        </div>
+    </div>
+</div>
+{/* Footer */ }
+<footer className="bg-brand-950 py-12 border-t border-white/10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="flex items-center gap-2 opacity-50">
+            <Hammer className="w-5 h-5 text-white" />
+            <span className="font-bold text-lg">MANO YA</span>
+        </div>
+        <div className="text-brand-400 text-sm flex items-center gap-4">
+            <span>© 2025 Mano Ya Platform. Todos los derechos reservados.</span>
+            <button
+                onClick={() => setShowDashboard(true)}
+                className="opacity-20 hover:opacity-100 transition-opacity cursor-pointer"
+                title="Acceso Presidente"
+            >
+                <Lock className="w-4 h-4" />
+            </button>
+        </div>
+    </div>
+</footer>
+
+{/* President Dashboard Overlay */ }
+{
+    showDashboard && (
+        <PresidentDashboard onClose={() => setShowDashboard(false)} />
+    )
+}
+    </div >
 );
 }
 

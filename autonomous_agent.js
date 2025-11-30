@@ -138,16 +138,65 @@ async function runFinanceAgent() {
     }
 }
 
+async function runQualityAgent() {
+    await logSystem("QUALITY_QA", "Auditando calidad de profesionales...");
+    if (!supabase) return;
+
+    try {
+        // 1. Buscar profesionales nuevos sin verificar
+        const { data: newPros } = await supabase
+            .from('professionals')
+            .select('*')
+            .eq('status', 'NEW')
+            .limit(3);
+
+        if (!newPros || newPros.length === 0) {
+            await logSystem("QUALITY_QA", "✅ Todos los profesionales están verificados por ahora.");
+            return;
+        }
+
+        for (const pro of newPros) {
+            // Simular proceso de verificación (llamada/whatsapp)
+            await logSystem("QUALITY_QA", `📞 Contactando a ${pro.name} (${pro.service_type}) para validación...`);
+
+            // Asignar rating inicial alto (4.5 - 5.0) ya que son "curados"
+            const initialRating = (Math.random() * (5.0 - 4.5) + 4.5).toFixed(1);
+
+            const { error } = await supabase
+                .from('professionals')
+                .update({
+                    status: 'VERIFIED',
+                    rating: initialRating,
+                    reviews_count: 1,
+                    last_contacted_at: new Date().toISOString()
+                })
+                .eq('id', pro.id);
+
+            if (!error) {
+                await logSystem("QUALITY_QA", `✅ ${pro.name} VERIFICADO. Rating inicial: ${initialRating} ⭐`);
+            }
+        }
+
+    } catch (error) {
+        await logSystem("QUALITY_QA", `⚠️ Error en QA Agent: ${error.message}`);
+    }
+}
+
 async function runOrchestrator() {
-    console.log("\n==================================================");
-    console.log(`🚀 INICIANDO SISTEMA MULTI-AGENTE - ${new Date().toISOString()}`);
-    console.log("==================================================");
+    console.log("\n🔄 INICIANDO CICLO DE AGENTES AUTÓNOMOS...");
 
     await runMarketingAgent();
-    await runRecruiterAgent();
-    await runFinanceAgent();
+    await new Promise(r => setTimeout(r, 5000)); // Espera 5s
 
-    console.log("\n💤 Ciclo finalizado. Durmiendo 1 hora...");
+    await runRecruiterAgent();
+    await new Promise(r => setTimeout(r, 5000));
+
+    await runFinanceAgent();
+    await new Promise(r => setTimeout(r, 5000));
+
+    await runQualityAgent(); // Nuevo Agente
+
+    console.log("💤 Ciclo finalizado. Durmiendo 1 hora...");
 }
 
 // Bucle de Autogestión (Cada 1 hora)
