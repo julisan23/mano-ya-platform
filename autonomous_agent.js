@@ -196,9 +196,40 @@ async function runOrchestrator() {
     await runFinanceAgent();
     await new Promise(r => setTimeout(r, 5000));
 
-    await runQualityAgent(); // Nuevo Agente
+    await runQualityAgent();
+    await new Promise(r => setTimeout(r, 5000));
+
+    await runDesignerAgent(); // Nuevo Agente de Diseño
 
     console.log("💤 Ciclo finalizado. Durmiendo 1 hora...");
+}
+
+async function runDesignerAgent() {
+    await logSystem("DESIGNER_BOT", "Analizando métricas de UX/UI...");
+    if (!ai) return;
+
+    try {
+        const model = ai.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const prompt = `
+            Eres el Lead Designer Autónomo de "CAPOS".
+            Tu objetivo es mejorar la conversión y la estética de la plataforma continuamente.
+            Analiza tendencias de diseño "Industrial Premium" (Black & Yellow).
+            
+            Sugiere una micro-mejora para la web de hoy.
+            Ejemplos: "Aumentar contraste en botón de llamada", "Animar entrada de testimonios", "Simplificar formulario de registro".
+            
+            Responde SOLO con la sugerencia en una frase corta.
+        `;
+
+        const result = await model.generateContent(prompt);
+        const suggestion = result.response.text();
+
+        await logSystem("DESIGNER_BOT", `🎨 Propuesta de Mejora: "${suggestion.trim()}"`);
+        // En un futuro, este agente podría generar código CSS/React automáticamente.
+
+    } catch (error) {
+        await logSystem("DESIGNER_BOT", `⚠️ Error: ${error.message}`);
+    }
 }
 
 // Bucle de Autogestión (Cada 1 hora)

@@ -107,6 +107,7 @@ export function PresidentDashboard({ onClose }: any) {
                         <AgentStatus name="RECRUITER_BOT" status="Online" desc="Escaneando LinkedIn, Grupos de Facebook y Webs de oficios." color="text-blue-400" />
                         <AgentStatus name="MARKETING_BOT" status="Working" desc="Generando campañas en Instagram, TikTok y Google Ads." color="text-purple-400" />
                         <AgentStatus name="FINANCE_BOT" status="Standby" desc="Optimizando tarifas, cobros y pasarelas de pago." color="text-green-400" />
+                        <AgentStatus name="DESIGNER_BOT" status="Analyzing" desc="Mejorando UX/UI y conversión continuamente." color="text-pink-400" />
                     </div>
                 </div>
 
