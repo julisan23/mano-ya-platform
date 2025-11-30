@@ -40,7 +40,7 @@ async function runMarketingAgent() {
     try {
         // 1. Decisión Estratégica (Real)
         console.log("🧠 Consultando a Gemini para estrategia en tiempo real...");
-        const model = ai.getGenerativeModel({ model: "gemini-pro" });
+        const model = ai.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         const prompt = `
       Eres el CEO Autónomo de "MANO YA".
