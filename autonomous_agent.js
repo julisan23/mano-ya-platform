@@ -82,10 +82,9 @@ async function runMarketingAgent() {
             console.log(">> Copy:", strategy.copy);
         }
 
-    }
     } catch (error) {
-    console.error("🔥 Error en el ciclo del agente de Marketing:", error);
-}
+        console.error("🔥 Error en el ciclo del agente de Marketing:", error);
+    }
 }
 
 async function runRecruiterAgent() {
