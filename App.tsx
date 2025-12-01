@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Hammer, Shield, Zap, Star, ArrowRight, CheckCircle, Lock, Search, MapPin, Phone, Award, HardHat } from 'lucide-react';
 import { PresidentDashboard } from './components/PresidentDashboard';
 import { AuthModal } from './components/AuthModal';
+import { ProfessionalProfileModal } from './components/ProfessionalProfileModal';
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase Client
@@ -13,6 +14,8 @@ function App() {
   const [showDashboard, setShowDashboard] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState<'client' | 'professional'>('client');
+
+  const [selectedProfessional, setSelectedProfessional] = useState<any>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -49,6 +52,10 @@ function App() {
   const handleOpenAuth = (mode: 'client' | 'professional') => {
     setAuthMode(mode);
     setShowAuthModal(true);
+  };
+
+  const handleSelectProfessional = (professional: any) => {
+    setSelectedProfessional(professional);
   };
 
   const scrollToSearch = () => {
@@ -170,16 +177,23 @@ function App() {
             {searchResults.length > 0 ? (
               <ul className="space-y-4">
                 {searchResults.map((professional) => (
-                  <li key={professional.id} className="bg-white/5 border border-white/10 p-4 rounded-lg flex items-center gap-4 hover:bg-white/10 transition-colors cursor-pointer">
-                    <div className="w-12 h-12 bg-brand-500 rounded-full flex items-center justify-center text-black font-bold text-xl">
+                  <li
+                    key={professional.id}
+                    onClick={() => handleSelectProfessional(professional)}
+                    className="bg-white/5 border border-white/10 p-4 rounded-lg flex items-center gap-4 hover:bg-white/10 transition-colors cursor-pointer group"
+                  >
+                    <div className="w-12 h-12 bg-brand-500 rounded-full flex items-center justify-center text-black font-bold text-xl group-hover:scale-110 transition-transform">
                       {professional.name.charAt(0)}
                     </div>
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-white">{professional.name}</h3>
                       <p className="text-gray-400 text-sm">{professional.service_type}</p>
                     </div>
-                    <div className="text-brand-500 font-bold text-sm flex items-center gap-1">
-                      <CheckCircle className="w-4 h-4" /> Verificado
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="text-brand-500 font-bold text-sm flex items-center gap-1">
+                        <CheckCircle className="w-4 h-4" /> Verificado
+                      </div>
+                      <span className="text-xs text-zinc-500">Ver Perfil</span>
                     </div>
                   </li>
                 ))}
@@ -284,6 +298,13 @@ function App() {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         initialMode={authMode}
+      />
+
+      {/* Professional Profile Modal */}
+      <ProfessionalProfileModal
+        isOpen={!!selectedProfessional}
+        onClose={() => setSelectedProfessional(null)}
+        professional={selectedProfessional}
       />
 
       {/* President Dashboard Overlay */}
