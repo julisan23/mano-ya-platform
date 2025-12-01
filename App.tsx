@@ -25,16 +25,28 @@ function App() {
     // Hack: Si el usuario escribe "Plomero en Palermo", nos quedamos con "Plomero"
     const cleanQuery = searchQuery.split(' en ')[0].trim();
 
-    const { data, error } = await supabase
-      .from('professionals')
-      .select('*')
-      .or(`service_type.ilike.%${cleanQuery}%,name.ilike.%${cleanQuery}%`)
-      .limit(20);
+    try {
+      const { data, error } = await supabase
+        .from('professionals')
+        .select('*')
+        .or(`service_type.ilike.%${cleanQuery}%,name.ilike.%${cleanQuery}%`)
+        .limit(20);
 
-    if (data) {
-      setSearchResults(data);
+      if (data) {
+        setSearchResults(data);
+      }
+    } catch (error) {
+      console.error("Error searching:", error);
+    } finally {
+      setIsSearching(false);
     }
-    setIsSearching(false);
+  };
+
+  const scrollToSearch = () => {
+    const searchSection = document.getElementById('search-section');
+    if (searchSection) {
+      searchSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -53,11 +65,11 @@ function App() {
               <div className="bg-white/5 p-2 rounded-lg border border-white/10">
                 <HardHat className="w-5 h-5 text-brand-500" />
               </div>
-              <span className="font-bold text-xl tracking-widest text-white">CAPOS</span>
+              <span className="font-bold text-xl tracking-widest text-white">TECNIA</span>
             </div>
             <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-              <a href="#" className="hover:text-white transition-colors">Servicios</a>
-              <a href="#" className="hover:text-white transition-colors">Garantía</a>
+              <a href="#servicios" className="hover:text-white transition-colors">Servicios</a>
+              <a href="#garantia" className="hover:text-white transition-colors">Garantía</a>
               <a href="#" className="hover:text-white transition-colors">Empresas</a>
               <button className="bg-white text-brand-950 px-5 py-2 rounded-full font-semibold hover:bg-zinc-200 transition-colors">
                 Descargar App
@@ -78,26 +90,32 @@ function App() {
 
         <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-brand-400 text-xs font-bold tracking-[0.2em] uppercase mb-8 backdrop-blur-md shadow-2xl animate-fade-in-up">
-            <Star className="w-3 h-3 fill-brand-400" /> Excellence or Nothing
+            <Star className="w-3 h-3 fill-brand-400" /> Excelencia Técnica
           </div>
           <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[0.9] drop-shadow-2xl">
-            ELITE <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-brand-400 to-brand-600">TECHNICAL</span> <br />
-            SQUAD.
+            TALENTO <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-200 via-brand-400 to-brand-600">VERIFICADO</span> <br />
+            DE ÉLITE.
           </h1>
           <p className="text-xl md:text-2xl text-zinc-300 max-w-3xl mx-auto mb-12 font-light leading-relaxed tracking-wide">
             La plataforma definitiva para servicios de alta gama. <br />
-            <span className="text-white font-medium">Biometría. Garantía Real. Sin Amateurs.</span>
+            <span className="text-white font-medium">Biometría. Garantía Real. Sin Género, Solo Talento.</span>
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button className="group relative px-8 py-4 bg-brand-500 text-brand-950 rounded-full font-black text-lg tracking-wider overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.5)]">
+            <button
+              onClick={scrollToSearch}
+              className="group relative px-8 py-4 bg-brand-500 text-brand-950 rounded-full font-black text-lg tracking-wider overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.5)]"
+            >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
               <span className="relative flex items-center gap-2">
-                SOLICITAR CAPO <ArrowRight className="w-5 h-5" />
+                SOLICITAR EXPERTO <ArrowRight className="w-5 h-5" />
               </span>
             </button>
-            <button className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-bold text-lg tracking-wider hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-md">
+            <button
+              onClick={() => alert('El acceso para profesionales estará disponible en la próxima actualización.')}
+              className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-bold text-lg tracking-wider hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-md"
+            >
               ACCESO PROFESIONAL
             </button>
           </div>
@@ -105,9 +123,9 @@ function App() {
           {/* Premium Trust Indicators */}
           <div className="mt-20 pt-10 border-t border-white/5 flex flex-wrap justify-center gap-12 opacity-80">
             {[
-              { icon: Lock, text: 'AES-256 Encrypted' },
-              { icon: Shield, text: 'Biometric Verified' },
-              { icon: Award, text: 'Top 1% Talent' }
+              { icon: Lock, text: 'Encriptación AES-256' },
+              { icon: Shield, text: 'Biometría Verificada' },
+              { icon: Award, text: 'Top 1% Talento' }
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3 text-xs font-bold text-zinc-500 uppercase tracking-widest">
                 <item.icon className="w-4 h-4 text-brand-500" /> {item.text}
@@ -118,7 +136,7 @@ function App() {
       </div>
 
       {/* Search Bar Section */}
-      <div className="max-w-2xl mx-auto mb-16 relative z-20 px-6">
+      <div id="search-section" className="max-w-2xl mx-auto mb-16 relative z-20 px-6">
         <form onSubmit={handleSearch} className="relative flex items-center group">
           <Search className="absolute left-5 w-6 h-6 text-gray-500 group-focus-within:text-brand-500 transition-colors" />
           <input
@@ -143,31 +161,37 @@ function App() {
             {searchResults.length > 0 ? (
               <ul className="space-y-4">
                 {searchResults.map((professional) => (
-                  <li key={professional.id} className="bg-white/5 border border-white/10 p-4 rounded-lg flex items-center gap-4">
+                  <li key={professional.id} className="bg-white/5 border border-white/10 p-4 rounded-lg flex items-center gap-4 hover:bg-white/10 transition-colors cursor-pointer">
                     <div className="w-12 h-12 bg-brand-500 rounded-full flex items-center justify-center text-black font-bold text-xl">
                       {professional.name.charAt(0)}
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <h3 className="text-lg font-bold text-white">{professional.name}</h3>
                       <p className="text-gray-400 text-sm">{professional.service_type}</p>
+                    </div>
+                    <div className="text-brand-500 font-bold text-sm flex items-center gap-1">
+                      <CheckCircle className="w-4 h-4" /> Verificado
                     </div>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-400 text-center">No se encontraron resultados para "{searchQuery}".</p>
+              <div className="text-center p-8 bg-white/5 rounded-xl border border-white/10">
+                <p className="text-zinc-400 mb-2">No encontramos resultados para "{searchQuery}".</p>
+                <p className="text-sm text-zinc-500">Probá buscando "Plomero", "Gasista" o "Electricista".</p>
+              </div>
             )}
           </div>
         )}
       </div>
 
       {/* Minimalist 'How it Works' */}
-      <div className="py-32 bg-zinc-900/50 border-y border-white/5">
+      <div id="servicios" className="py-32 bg-zinc-900/50 border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               { step: "01", title: "Solicitud Inteligente", desc: "Describí tu problema. Nuestra IA selecciona al especialista exacto para tu caso." },
-              { step: "02", title: "Match Certificado", desc: "Recibí el perfil de un Capo verificado. Foto, matrícula y reputación validada." },
+              { step: "02", title: "Match Certificado", desc: "Recibí el perfil de un especialista verificado. Foto, matrícula y reputación validada." },
               { step: "03", title: "Garantía Total", desc: "El pago se libera solo cuando confirmás que el trabajo quedó perfecto." }
             ].map((item, i) => (
               <div key={i} className="relative group">
@@ -181,11 +205,11 @@ function App() {
       </div>
 
       {/* Premium Features */}
-      <div className="py-32">
+      <div id="garantia" className="py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Estándar CAPOS.</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Estándar TECNIA.</h2>
               <p className="text-zinc-400 text-lg mb-8 leading-relaxed">
                 Elevamos la vara. Lo que para otros es "premium", para nosotros es el piso.
                 Rechazamos al 95% de los postulantes para que vos no tengas que filtrar a nadie.
@@ -235,12 +259,12 @@ function App() {
       <footer className="py-12 border-t border-white/5 text-center">
         <div className="flex items-center justify-center gap-2 opacity-50 mb-4">
           <HardHat className="w-5 h-5 text-zinc-500" />
-          <span className="font-bold text-zinc-500 tracking-widest">CAPOS</span>
+          <span className="font-bold text-zinc-500 tracking-widest">TECNIA</span>
         </div>
-        <p className="text-zinc-600 text-sm">© 2025 CAPOS Argentina. Tecnología de confianza.</p>
+        <p className="text-zinc-600 text-sm">© 2025 TECNIA Argentina. Tecnología de confianza.</p>
         <button
           onClick={() => setShowDashboard(true)}
-          className="mt-8 text-zinc-800 hover:text-zinc-600 transition-colors"
+          className="mt-8 text-white/20 hover:text-white/50 transition-colors"
         >
           <Lock className="w-3 h-3" />
         </button>
