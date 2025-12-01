@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Hammer, Shield, Zap, Star, ArrowRight, CheckCircle, Lock, Search, MapPin, Phone, Award, HardHat } from 'lucide-react';
 import { PresidentDashboard } from './components/PresidentDashboard';
+import { AuthModal } from './components/AuthModal';
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase Client
@@ -10,6 +11,9 @@ const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supaba
 
 function App() {
   const [showDashboard, setShowDashboard] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'client' | 'professional'>('client');
+
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -40,6 +44,11 @@ function App() {
     } finally {
       setIsSearching(false);
     }
+  };
+
+  const handleOpenAuth = (mode: 'client' | 'professional') => {
+    setAuthMode(mode);
+    setShowAuthModal(true);
   };
 
   const scrollToSearch = () => {
@@ -104,7 +113,7 @@ function App() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <button
-              onClick={scrollToSearch}
+              onClick={() => handleOpenAuth('client')}
               className="group relative px-8 py-4 bg-brand-500 text-brand-950 rounded-full font-black text-lg tracking-wider overflow-hidden transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.5)]"
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
@@ -113,7 +122,7 @@ function App() {
               </span>
             </button>
             <button
-              onClick={() => alert('El acceso para profesionales estará disponible en la próxima actualización.')}
+              onClick={() => handleOpenAuth('professional')}
               className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full font-bold text-lg tracking-wider hover:bg-white/10 hover:border-white/20 transition-all backdrop-blur-md"
             >
               ACCESO PROFESIONAL
@@ -269,6 +278,13 @@ function App() {
           <Lock className="w-3 h-3" />
         </button>
       </footer>
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        initialMode={authMode}
+      />
 
       {/* President Dashboard Overlay */}
       {showDashboard && (
